@@ -194,13 +194,87 @@ public class TomcatService {
 
   /**
    * (to do)
-   *
+   * It will be deprecation
    * @param path (to do)
    */
   public void removeFile(String path) {
     Linux linux = new Linux();
     String removeFileCommand = "rm -rf " + path;
     linux.execLinuxCommand(removeFileCommand);
+  }
+
+  /**
+   * (to do)
+   * It will be deprecation
+   * @param file (to do)
+   */
+  public boolean deleteFile(File file) {
+    return file.delete();
+  }
+
+  /**
+   * Remove a Folder
+   *
+   * @param dirTarget (to do)
+   */
+  public boolean deleteDirectory(File dirTarget) {
+    if (dirTarget.isDirectory() && dirTarget.exists()) {
+      String[] fileList = dirTarget.list();
+
+      for (String s : fileList) {
+        String subFile = dirTarget.getPath() + File.separator + s;
+        File tmp = new File(subFile);
+        if (tmp.isFile()) {
+          tmp.delete();
+        }
+        if (tmp.isDirectory()) {
+          deleteDirectory(tmp);
+        }
+      }
+
+      dirTarget.delete();
+    } else {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Remove file in that directory but not directory
+   * like rm -rf test_directory/*
+   *
+   * @param directory (to do)
+   */
+  public boolean deleteFileInDirectory(File directory) {
+    boolean isDeleteDirSuccess = deleteDirectory(directory);
+    boolean isCreateNewDirectorySuccess = createNewDirectory(directory);
+    return (isDeleteDirSuccess && isCreateNewDirectorySuccess);
+  }
+
+  /**
+   * create a new empty file
+   *
+   * @param file (to do)
+   */
+  public boolean createNewFile(File file) {
+    try {
+      if (file.createNewFile()) {
+        return true;
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    return false;
+  }
+
+  /**
+   * create a new directory
+   *
+   * @param directory (to do)
+   */
+  public boolean createNewDirectory(File directory) {
+    return directory.mkdir();
   }
 
   /**
