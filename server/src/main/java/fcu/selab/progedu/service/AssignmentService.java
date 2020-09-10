@@ -154,6 +154,7 @@ public class AssignmentService {
     zipHandler.unzipFile(filePath, testDirectory);
     assignment.createTemplate(cloneDirectoryPath);
     testZipChecksum = assignment.createTestCase(testDirectory).getChecksum();
+    // 以上有創專案專用的command檔案, 資料夾不會被刪除tests
     testZipUrl = assignment.createTestCase(testDirectory).getZipFileUrl();
 
     // 5. Add .gitkeep if folder is empty.

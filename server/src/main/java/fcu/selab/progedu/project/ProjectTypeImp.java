@@ -20,7 +20,7 @@ public abstract class ProjectTypeImp implements ProjectType {
     String jenkinsJobConfigPath = this.getClass()
         .getResource("/jenkins/" + getJenkinsJobConfigSample()).getPath();
     String jobName = jenkins.getJobName(username, projectName);
-    createJenkinsJobConfig(username, projectName);
+    createJenkinsJobConfig(username, projectName); // 本地tomcat 在這裡會出錯 導致沒有Jenkins的設定
     jenkins.createJob(jobName, jenkinsJobConfigPath);
     jenkins.buildJob(jobName);
 

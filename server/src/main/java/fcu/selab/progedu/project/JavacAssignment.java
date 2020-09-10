@@ -74,7 +74,12 @@ public class JavacAssignment extends AssignmentType {
       String updateDbUrl = progEduApiUrl + "/commits/update";
       // to-do : command
       String assignmentPath = System.getProperty("java.io.tmpdir") + "/tests/" + projectName;
-      String command = getCommandFromFile(assignmentPath);
+      LOGGER.debug("franky-test-assignmentPath");
+      LOGGER.debug(assignmentPath);
+      String command = getCommandFromFile(assignmentPath); // 本地tomcat 在這裡會出錯 導致沒有Jenkins的設定
+
+      LOGGER.debug("franky-test-command");
+      LOGGER.debug(command);
 
       Document doc = docBuilder.parse(jenkinsJobConfigPath);
       doc.getElementsByTagName("command").item(0).setTextContent(command);
@@ -89,6 +94,8 @@ public class JavacAssignment extends AssignmentType {
       Transformer transformer = transformerFactory.newTransformer();
       DOMSource source = new DOMSource(doc);
       StreamResult result = new StreamResult(new File(jenkinsJobConfigPath));
+      LOGGER.debug("franky-test-jenkinsJobConfigPath");
+      LOGGER.debug(jenkinsJobConfigPath);
       transformer.transform(source, result);
     } catch (LoadConfigFailureException | ParserConfigurationException | SAXException | IOException
         | TransformerException e) {
@@ -127,7 +134,7 @@ public class JavacAssignment extends AssignmentType {
     long testZipChecksum = 0;
     String testZipUrl = "";
 
-    createCommandFile(testDirectory);
+    createCommandFile(testDirectory); //創建在tests 資料夾的專案-command
     ZipFileInfo zipFileInfo = new ZipFileInfo(testZipChecksum, testZipUrl);
 
     return zipFileInfo;
